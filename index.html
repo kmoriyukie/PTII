@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <script src="https://cdn.plot.ly/plotly-2.11.1.min.js"></script>
+        <title>E-Skin Interface</title>
+
+        <style>
+            html,body {
+                height: 100%; 
+                min-height: 100%;
+                margin: 0px; 
+                padding: 0px; 
+                background-color: #F9F9ED;
+                color:#1A132F;
+                font-family:sans-serif;
+            }
+
+            #sidebar{
+                background-color: #DBF4A7;
+                width: 20vh;
+                height: 100%;
+                top: 0px;
+                bottom:0px;
+                position:fixed;
+            }
+            #title {
+                position: relative;
+                top:0;
+                text-align: center;
+                text-decoration: underline;
+                font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+            }
+            .button_container {
+                display: flex;
+                text-align: center;
+                align-items: center;
+                flex-direction: column;
+                justify-content: center;
+                height: 100%;
+                position: relative;
+            }
+            .button{
+                margin:20px;
+                padding:5px;
+                overflow: hidden;
+                border-width: 1px;
+                border-radius: 100%;
+                border-collapse: separate; 
+            }
+            .button:hover{
+                background-color: #1A132F;
+            }
+            .button_img{
+                margin: 10px;
+                width: 50px;
+                height: 50px;
+                perspective: 1px;
+                overflow: hidden;
+            }
+            #main_container{
+                display: flex;
+                left:20vh;
+                right:0;
+                bottom: 0;
+                top: 0;
+                align-items: center;
+                position: absolute;
+                flex-direction: column;
+                /* background-color: white; */
+            }
+            #main{
+                position: absolute;
+                top: 10%;
+                min-height: 80%;
+                width: 80%;
+                background-color: #8E9DCC;
+                overflow-y:auto;
+            }
+            #data{
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                flex-direction: row;
+                align-items: stretch;
+                flex-wrap: wrap;
+                gap:10px;
+                flex: 1;
+            }
+            .graph{
+                width: 40%;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: stretch;
+            }
+            /* #graph_title{
+                background-color: white;
+                text-align: center;
+            }
+            #grid {
+                display: flex;
+                flex-direction: row;
+                gap: 5px;
+                align-items: stretch;
+                background-color: white;
+            } */
+
+            #tile{
+                background-color: white;
+            }
+
+        </style>
+    </head>
+    <body>
+        <div id="sidebar">
+            <div class="button_container">
+                <div class="button" id="overview_button"><img src="./icons/home.png" class="button_img"> </div>
+                <div class="button" id="graphs_button"><img src="./icons/line-graph.png" class="button_img"></div>
+                <!-- <div class="button" id="more_button"><img src="./icons/plus.png" class="button_img"></div/div> -->
+            </div>
+        </div>
+        <div id="main_container">
+            <div id="main">
+                <div id="title">
+                    <h1>Sensor data</h1>
+                </div>
+                <div id="data">
+                    <div class="graph" id="first"></div>
+                    <div class="graph" id="second"></div>
+                    <div class="graph" id="third"></div>
+                    <!-- <div class="graph" id="fourth"> -->
+                        <!-- <div id="graph_title">Title</div>
+                        <div id="grid">
+                            <div class="tile"></div>
+                            <div class="tile"></div>
+                            <div class="tile"></div>
+                            <div class="tile"></div>
+                            <div class="tile"></div>
+                            <div class="tile"></div>
+                            <div class="tile"></div>
+                            <div class="tile"></div>
+                            <div class="tile"></div>
+                        </div> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        g1 = document.getElementById('first');
+        g2 = document.getElementById('second');
+        g3 = document.getElementById("third");
+        // T4 = document.getElementById("fourth");
+        // var aux = ;
+        const x = [... Array(5).keys()];
+        var y = [];
+        var y2=[];
+        x.forEach(e => y.push(Math.exp(-e)));
+        x.forEach(e => y2.push(Math.exp(e)));
+        
+        console.log(y)
+        const marker_style = {
+            color: '#C8A2C8',
+            line: {
+                width: 2.5
+            }
+        }
+        const black_line = {
+            color: '#000000',
+            line: {
+                width: 1
+            }
+        }
+        var trace1 = {
+            type: 'scatter',
+            x: x,
+            y: y,
+            marker: marker_style
+            };
+        var trace_pressure = {
+            type: 'scatter',
+            x: x,
+            y:y2,
+            marker:marker_style
+        }
+        var data = [ trace1 ];
+        var data2 = [trace_pressure];
+        var layout = { 
+            title: 'Distance from sensor',
+            font: {size: 10},
+            yaxis: {visible:false},
+            xaxis: {title:{text:"time"}},
+            autosize: true
+        };
+        var layout_pressure = {
+            title: 'Pressure',
+            font: {size: 10},
+            xaxis: {title:{text:"time"}},
+            autosize: true
+        }
+        var config = {responsive: true,
+                      staticPlot: true}
+
+        Plotly.newPlot(g1, data, layout, config );
+        Plotly.newPlot(g3, data2, layout_pressure, config );
+        var trace2 = {
+            type: "scatter",
+            x: [1],
+            y: [1],
+            marker: marker_style
+        }
+        var horiz_line = {
+            type: "scatter",
+            mode:'lines',
+            x: [2, 2],
+            y: [0, 4],
+            marker: black_line,
+            line: {width: 1}
+        }
+        var horiz_line2 = {
+            type: "scatter",
+            mode:'lines',
+            x: [4, 4],
+            y: [0, 4],
+            marker: black_line,
+            line: {width: 1}
+        }
+        var vert_line = {
+            type: "scatter",
+            mode:'lines',
+            x: [0, 4],
+            y: [2, 2],
+            marker: black_line,
+            line: {width: 1}
+        }
+        var vert_line2 = {
+            type: "scatter",
+            mode:'lines',
+            x: [0, 4],
+            y: [4, 4],
+            marker: black_line,
+            line: {width: 1}
+        }
+        var layout2 = {
+            title: "Object position",
+            font: {size: 10},
+            yaxis:{
+                ticktext:["Sensor 1", "Sensor 2"],
+                tickvals:[1, 3],
+                range:[0, 4]
+            },
+            xaxis:{
+                ticktext:["Sensor 3", "Sensor 4"],
+                tickvals:[1, 3],
+                range:[0, 4]
+            },
+            autosize: true,
+            showlegend:false
+        }
+        Plotly.newPlot(g2, [trace2, horiz_line, horiz_line2, vert_line, vert_line2], layout2, config );
+
+
+    </script>
+</html>
