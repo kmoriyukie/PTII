@@ -5,32 +5,36 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta charset="utf-8">
         <script src="https://cdn.plot.ly/plotly-2.11.1.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
         <title>E-Skin Interface</title>
 
         <style>
             html,body {
-                height: 100%; 
-                min-height: 100%;
+                /* height: 100%;  */
+                /* min-height: 100%; */
                 margin: 0px; 
                 padding: 0px; 
-                background-color: #F9F9ED;
-                color:#1A132F;
+                top: 0px;
+                bottom: 0;
+                background-color: #121212;
+                color: white;
                 font-family:sans-serif;
             }
 
             #sidebar{
-                background-color: #DBF4A7;
+                /* background-color: #DBF4A7; */
                 width: 20vh;
                 height: 100%;
                 top: 0px;
                 bottom:0px;
                 position:fixed;
             }
-            #title {
+            .title {
                 position: relative;
                 top:0;
                 text-align: center;
-                text-decoration: underline;
+                /* text-decoration: underline; */
+                flex-grow: 1;
                 font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             }
             .button_container {
@@ -43,15 +47,18 @@
                 position: relative;
             }
             .button{
+                /* background-color: #DBF4A7; */
                 margin:20px;
                 padding:5px;
                 overflow: hidden;
-                border-width: 1px;
+                border: solid;
+                border-width: 2px;
+                border-color: #5b417b;
                 border-radius: 100%;
                 border-collapse: separate; 
             }
             .button:hover{
-                background-color: #1A132F;
+                background-color: #332940;
             }
             .button_img{
                 margin: 10px;
@@ -62,58 +69,96 @@
             }
             #main_container{
                 display: flex;
-                left:20vh;
+                left:25vh;
                 right:0;
                 bottom: 0;
                 top: 0;
+                
+                position: fixed;
+                flex-direction: row;
                 align-items: center;
-                position: absolute;
-                flex-direction: column;
-                /* background-color: white; */
+                justify-content: center;
+                min-height: 0;
+                overflow-y: auto;
+                overflow-x: hidden;
+                flex-wrap: wrap;
             }
-            #main{
-                position: absolute;
-                top: 10%;
-                min-height: 80%;
-                width: 80%;
-                background-color: #8E9DCC;
+            .main{
+                display: flex;
+                flex: 1;
+                background-color: #241a2f;
                 overflow-y:auto;
+                overflow-x: hidden;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                min-height: 80vh;
             }
-            #data{
-                width: 100%;
+            .data{
+                flex: 1;
                 display: flex;
                 justify-content: center;
                 flex-direction: row;
-                align-items: stretch;
-                flex-wrap: wrap;
+                align-items: center;
+                /* flex-wrap: wrap; */
+                min-height: 0;
                 gap:10px;
+                overflow-y: auto;
+            }
+            .data .graph{
                 flex: 1;
             }
-            .graph{
-                width: 40%;
-                height: 100%;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: stretch;
-            }
-            /* #graph_title{
-                background-color: white;
-                text-align: center;
-            }
-            #grid {
+            .info_block{
                 display: flex;
                 flex-direction: row;
-                gap: 5px;
-                align-items: stretch;
-                background-color: white;
-            } */
-
-            #tile{
-                background-color: white;
+                justify-content: center;
+                align-items: center;
+                width: 60%;
+                top: 0;
+                bottom: 0;
             }
-
+            .info{
+                flex-grow: 1;
+                padding: 5px;
+                padding-left: 10px;
+                margin-left: 10px;
+                font-size:larger;
+            }
+            .info_img{
+                flex-grow: 2;
+                width: 100px;
+            }
+            .info_text{
+                font-size: x-large;
+                font-weight:bold;
+                color:#b453d2;
+            }
+            #simple_data{
+                top: 0;
+                bottom: 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                flex-direction: column;
+                position: absolute;
+            }
         </style>
+        <script>
+            $(document).ready(
+                function(){
+                    $("#graph_menu").hide();
+                    $("#overview_button").click(function() {
+                        $("#graph_menu").hide();
+                        $("#simple").show();
+                    });
+                    $("#graphs_button").click(function() {
+                        $("#simple").hide();
+                        $("#graph_menu").show();
+                    });
+                }
+            );
+        </script>
     </head>
     <body>
         <div id="sidebar">
@@ -124,27 +169,30 @@
             </div>
         </div>
         <div id="main_container">
-            <div id="main">
-                <div id="title">
+            <div class="main" id="graph_menu">
+                <div class="title">
                     <h1>Sensor data</h1>
                 </div>
-                <div id="data">
+                <div class="data">
                     <div class="graph" id="first"></div>
                     <div class="graph" id="second"></div>
-                    <div class="graph" id="third"></div>
-                    <!-- <div class="graph" id="fourth"> -->
-                        <!-- <div id="graph_title">Title</div>
-                        <div id="grid">
-                            <div class="tile"></div>
-                            <div class="tile"></div>
-                            <div class="tile"></div>
-                            <div class="tile"></div>
-                            <div class="tile"></div>
-                            <div class="tile"></div>
-                            <div class="tile"></div>
-                            <div class="tile"></div>
-                            <div class="tile"></div>
-                        </div> -->
+                </div>
+                <div class="graph" id="third"></div>
+            </div>
+            <div class="main" id="simple">
+                <div class="title">
+                    <h1>Sensor data</h1>
+                </div>
+                <div class="data">
+                    <div id="simple_data">
+                        <div class="info_block">
+                            <div class="info_icon"><img src="./icons/touch-screen.png" class="info_img"></div>
+                            <div class="info">I <span class="info_text">detected</span> touch! And the pressure being applied is of <span class="info_text">60kPa</span>!</div>
+                        </div>
+                        <div class="info_block">
+                            <div class="info_icon"><img src="./icons/measuring-tape.png" class="info_img"></div>
+                            <div class="info">The object is <span class="info_text">2cm</span> away!</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -209,27 +257,11 @@
         Plotly.newPlot(g3, data2, layout_pressure, config );
         var trace2 = {
             type: "scatter",
-            x: [1],
+            x: [0.5],
             y: [1],
             marker: marker_style
         }
         var horiz_line = {
-            type: "scatter",
-            mode:'lines',
-            x: [2, 2],
-            y: [0, 4],
-            marker: black_line,
-            line: {width: 1}
-        }
-        var horiz_line2 = {
-            type: "scatter",
-            mode:'lines',
-            x: [4, 4],
-            y: [0, 4],
-            marker: black_line,
-            line: {width: 1}
-        }
-        var vert_line = {
             type: "scatter",
             mode:'lines',
             x: [0, 4],
@@ -237,31 +269,50 @@
             marker: black_line,
             line: {width: 1}
         }
+        var vert_line = {
+            type: "scatter",
+            mode:'lines',
+            x: [1, 1],
+            y: [0, 2],
+            marker: black_line,
+            line: {width: 1}
+        }
         var vert_line2 = {
             type: "scatter",
             mode:'lines',
-            x: [0, 4],
-            y: [4, 4],
+            x: [4, 4],
+            y: [0, 2],
+            marker: black_line,
+            line: {width: 1}
+        }
+        var vert_line3 = {
+            type: "scatter",
+            mode:'lines',
+            x: [3, 3],
+            y: [0, 2],
+            marker: black_line,
+            line: {width: 1}
+        }
+        var vert_line4 = {
+            type: "scatter",
+            mode:'lines',
+            x: [2, 2],
+            y: [0, 2],
             marker: black_line,
             line: {width: 1}
         }
         var layout2 = {
             title: "Object position",
             font: {size: 10},
-            yaxis:{
-                ticktext:["Sensor 1", "Sensor 2"],
-                tickvals:[1, 3],
-                range:[0, 4]
-            },
             xaxis:{
-                ticktext:["Sensor 3", "Sensor 4"],
-                tickvals:[1, 3],
+                ticktext:["Sensor 1", "Sensor 2","Sensor 3", "Sensor 4"],
+                tickvals:[0.5, 1.5, 2.5, 3.5],
                 range:[0, 4]
             },
-            autosize: true,
-            showlegend:false
+            // autosize: true,
+            showlegend:false,
         }
-        Plotly.newPlot(g2, [trace2, horiz_line, horiz_line2, vert_line, vert_line2], layout2, config );
+        Plotly.newPlot(g2, [trace2, horiz_line, vert_line, vert_line2, vert_line3, vert_line4], layout2, config );
 
 
     </script>
