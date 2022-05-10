@@ -16,18 +16,19 @@
                 padding: 0px; 
                 top: 0px;
                 bottom: 0;
-                background-color: #121212;
-                color: white;
+                background-color: black;
+                color: #747474;
                 font-family:sans-serif;
             }
 
             #sidebar{
                 /* background-color: #DBF4A7; */
-                width: 20vh;
+                width: 13vh;
                 height: 100%;
                 top: 0px;
                 bottom:0px;
                 position:fixed;
+                
             }
             .title {
                 position: relative;
@@ -35,6 +36,7 @@
                 text-align: center;
                 /* text-decoration: underline; */
                 flex-grow: 1;
+                color:#5ab9ea;
                 font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
             }
             .button_container {
@@ -53,12 +55,13 @@
                 overflow: hidden;
                 border: solid;
                 border-width: 2px;
-                border-color: #5b417b;
+                /* background-color: # */
+                border-color: #AC3b61;
                 border-radius: 100%;
                 border-collapse: separate; 
             }
             .button:hover{
-                background-color: #332940;
+                background-color: #272727;
             }
             .button_img{
                 margin: 10px;
@@ -69,11 +72,11 @@
             }
             #main_container{
                 display: flex;
-                left:25vh;
+                left:15vh;
                 right:0;
                 bottom: 0;
                 top: 0;
-                
+                background-color: #272727;
                 position: fixed;
                 flex-direction: row;
                 align-items: center;
@@ -82,17 +85,20 @@
                 overflow-y: auto;
                 overflow-x: hidden;
                 flex-wrap: wrap;
+                border-width:2px;
+                border-left: solid;
+                border-color: #AC3b61;
             }
             .main{
                 display: flex;
                 flex: 1;
-                background-color: #241a2f;
+                
                 overflow-y:auto;
                 overflow-x: hidden;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: 10px;
+                gap: 15px;
                 min-height: 80vh;
             }
             .data{
@@ -103,7 +109,7 @@
                 align-items: center;
                 /* flex-wrap: wrap; */
                 min-height: 0;
-                gap:10px;
+                gap:15px;
                 overflow-y: auto;
             }
             .data .graph{
@@ -132,7 +138,7 @@
             .info_text{
                 font-size: x-large;
                 font-weight:bold;
-                color:#b453d2;
+                color: #5ab9ea;
             }
             #simple_data{
                 top: 0;
@@ -204,6 +210,9 @@
         g3 = document.getElementById("third");
         // T4 = document.getElementById("fourth");
         // var aux = ;
+        const gray = '#747474';
+        const line_color = '#AC3b61';
+        const marker_color = '#5ab9ea';
         const x = [... Array(5).keys()];
         var y = [];
         var y2=[];
@@ -212,16 +221,21 @@
         
         console.log(y)
         const marker_style = {
-            color: '#C8A2C8',
+            color: marker_color,
             line: {
-                width: 2.5
+                width: 2.5,
+                color: line_color,
             }
         }
         const black_line = {
-            color: '#000000',
+            color: gray,
             line: {
                 width: 1
             }
+        }
+        const font = {
+            size: 10, 
+            color: '#5ab9ea'
         }
         var trace1 = {
             type: 'scatter',
@@ -239,15 +253,20 @@
         var data2 = [trace_pressure];
         var layout = { 
             title: 'Distance from sensor',
-            font: {size: 10},
-            yaxis: {visible:false},
-            xaxis: {title:{text:"time"}},
+            font: font,
+            yaxis: {gridcolor:gray},
+            xaxis: {title:{text:"time"}, gridcolor:gray},
+            paper_bgcolor:'rgba(0,0,0,0)',
+            plot_bgcolor:'rgba(0,0,0,0)',
             autosize: true
         };
         var layout_pressure = {
             title: 'Pressure',
-            font: {size: 10},
-            xaxis: {title:{text:"time"}},
+            font: font,
+            yaxis: {gridcolor:gray},
+            xaxis: {title:{text:"time"}, gridcolor:gray},
+            plot_bgcolor:'rgba(0,0,0,0)',
+            paper_bgcolor:'rgba(0,0,0,0)',
             autosize: true
         }
         var config = {responsive: true,
@@ -256,10 +275,13 @@
         Plotly.newPlot(g1, data, layout, config );
         Plotly.newPlot(g3, data2, layout_pressure, config );
         var trace2 = {
-            type: "scatter",
-            x: [0.5],
-            y: [1],
-            marker: marker_style
+            type: "bar",
+            x: [0],
+            y: [2],
+            width: 2,
+            marker: {
+                color: line_color  
+            }
         }
         var horiz_line = {
             type: "scatter",
@@ -267,7 +289,7 @@
             x: [0, 4],
             y: [2, 2],
             marker: black_line,
-            line: {width: 1}
+            line: {width: 1, color:gray}
         }
         var vert_line = {
             type: "scatter",
@@ -275,7 +297,7 @@
             x: [1, 1],
             y: [0, 2],
             marker: black_line,
-            line: {width: 1}
+            line: {width: 1, color:gray}
         }
         var vert_line2 = {
             type: "scatter",
@@ -283,7 +305,7 @@
             x: [4, 4],
             y: [0, 2],
             marker: black_line,
-            line: {width: 1}
+            line:{width: 1, color:gray}
         }
         var vert_line3 = {
             type: "scatter",
@@ -291,7 +313,7 @@
             x: [3, 3],
             y: [0, 2],
             marker: black_line,
-            line: {width: 1}
+            line: {width: 1, color:gray}
         }
         var vert_line4 = {
             type: "scatter",
@@ -299,21 +321,25 @@
             x: [2, 2],
             y: [0, 2],
             marker: black_line,
-            line: {width: 1}
+            line: {width: 1, color:gray}
         }
         var layout2 = {
             title: "Object position",
-            font: {size: 10},
+            font: font,
             xaxis:{
                 ticktext:["Sensor 1", "Sensor 2","Sensor 3", "Sensor 4"],
                 tickvals:[0.5, 1.5, 2.5, 3.5],
-                range:[0, 4]
+                range:[0, 4], 
             },
+            paper_bgcolor:'rgba(0,0,0,0)',
+            plot_bgcolor:'rgba(0,0,0,0)',
             // autosize: true,
             showlegend:false,
         }
         Plotly.newPlot(g2, [trace2, horiz_line, vert_line, vert_line2, vert_line3, vert_line4], layout2, config );
+    </script>
 
-
+    <script>
+        
     </script>
 </html>
