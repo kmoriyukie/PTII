@@ -19,6 +19,10 @@ class port_dialog(QDialog):
         uic.loadUi('widgets\port_dialog.ui', self)
         
         self.parent = parent
+        self.listPorts()
+        self.com_list.itemClicked.connect(self.select_com)
+        self.refresh_button.clicked.connect(self.listPorts)
+    def listPorts(self):
         ls = list(list_ports.comports())
         
         for port in ls:
@@ -28,10 +32,10 @@ class port_dialog(QDialog):
             self.com_list.addItem(item)
             self.com_list.setItemWidget(item, item_widget)
 
-        self.com_list.itemClicked.connect(self.select_com)
     def select_com(self, obj):
         port_name = self.com_list.itemWidget(self.com_list.item(
                                         self.com_list.indexFromItem(obj).row())).port_name.text()
         self.parent.set_com_port(port_name)
+        self.close()
             
         

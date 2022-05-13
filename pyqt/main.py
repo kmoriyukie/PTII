@@ -25,7 +25,8 @@ class Ui(QtWidgets.QMainWindow):
         self.port_dialog = port_dialog(self)
         self.port_dialog.exec_()
 
-        print(self.is_connected())
+        if not self.is_connected():
+            print("INSERT TRY AGAIN DIALOG HERE")
         self.show()
 
     def is_connected(self): #Check if connected
@@ -33,6 +34,10 @@ class Ui(QtWidgets.QMainWindow):
     def set_com_port(self, com):
         self.com_port = com
 
-app = QtWidgets.QApplication(sys.argv)
-ui = Ui()
-app.exec_()
+def main():
+    app = QtWidgets.QApplication(sys.argv)
+    ui = Ui()
+    app.exec_()
+
+
+main()
