@@ -14,10 +14,11 @@ class port_item(QWidget):
 
 
 class port_dialog(QDialog):
-    def __init__(self):
+    def __init__(self, parent):
         super(port_dialog, self).__init__()
         uic.loadUi('widgets\port_dialog.ui', self)
-
+        
+        self.parent = parent
         ls = list(list_ports.comports())
         
         for port in ls:
@@ -29,8 +30,8 @@ class port_dialog(QDialog):
 
         self.com_list.itemClicked.connect(self.select_com)
     def select_com(self, obj):
-        print(self.com_list.itemWidget(self.com_list.item(
-                self.com_list.indexFromItem(obj).row())).port_name.text())
-        # self.com_list.setSizeAdjustPolicy()
+        port_name = self.com_list.itemWidget(self.com_list.item(
+                                        self.com_list.indexFromItem(obj).row())).port_name.text()
+        self.parent.set_com_port(port_name)
             
         

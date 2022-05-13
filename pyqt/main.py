@@ -22,22 +22,16 @@ class Ui(QtWidgets.QMainWindow):
         self.tab.addTab(self.simple_menu, 'Tab 1')
         self.tab.addTab(self.graphs, 'Tab 2')
         
-        self.port_dialog = port_dialog()
+        self.port_dialog = port_dialog(self)
         self.port_dialog.exec_()
-        # self.serial = serial.Serial()
-        # self.serial.port='COM7'
-        # self.serial.open()
-        # self.serial.close()
-        # print(self.serial.read())
-        self.show()
-    def conn(self): #Check if connected
-        ls = list(list_ports.comports())
-        for item in ls:
-            pass
-        connected = True
-        return connected
 
-            
+        print(self.is_connected())
+        self.show()
+
+    def is_connected(self): #Check if connected
+        return len(self.com_port) > 0
+    def set_com_port(self, com):
+        self.com_port = com
 
 app = QtWidgets.QApplication(sys.argv)
 ui = Ui()
