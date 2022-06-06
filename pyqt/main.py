@@ -7,7 +7,6 @@ from simple_menu import simple_menu
 from graphs import graphs
 
 import serial
-from serial.tools import list_ports
 
 from widgets.port_dialog import port_dialog, port_item
 class Ui(QtWidgets.QMainWindow):
@@ -27,17 +26,32 @@ class Ui(QtWidgets.QMainWindow):
 
         if not self.is_connected():
             print("INSERT TRY AGAIN DIALOG HERE")
+        
+        self.serial = serial.Serial(port=self.com_port, baudrate=115200)
+        print("connected to: " + self.serial.portstr)
+        
+        # self.simple_menu.dist_disp.setText(self.read_com())
+        print(self.read_com())
         self.show()
+        self.serial.close()
 
     def is_connected(self): #Check if connected
         return len(self.com_port) > 0
     def set_com_port(self, com):
         self.com_port = com
+    def read_com(self):
+        seq = []
+        count = 1
+        while True:
+            for c in self.serial.read():
+                seq.append(chr(c)) #convert from ANSII
+                joined_seq = ''.join(str(v) for v in seq) #Make a string from array
 
+                if chr(c) == '\n':
+                    return joined_seq
 def main():
     app = QtWidgets.QApplication(sys.argv)
     ui = Ui()
     app.exec_()
-
 
 main()

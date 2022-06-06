@@ -34,7 +34,7 @@ class port_dialog(QDialog):
 
     def select_com(self, obj):
         port_name = self.com_list.itemWidget(self.com_list.item(
-                                        self.com_list.indexFromItem(obj).row())).port_name.text()
+                                             self.com_list.indexFromItem(obj).row())).port_name.text()
         self.parent.set_com_port(port_name)
         self.close()
             
