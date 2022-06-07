@@ -22,18 +22,18 @@ class Ui(QtWidgets.QMainWindow):
         self.tab.addTab(self.graphs, 'Tab 2')
         
         self.port_dialog = port_dialog(self)
-        self.port_dialog.exec_()
+        # self.port_dialog.exec_()
 
-        if not self.is_connected():
-            print("INSERT TRY AGAIN DIALOG HERE")
+        # if not self.is_connected():
+        #     print("INSERT TRY AGAIN DIALOG HERE")
         
-        self.serial = serial.Serial(port=self.com_port, baudrate=115200)
-        print("connected to: " + self.serial.portstr)
+        # self.serial = serial.Serial(port=self.com_port, baudrate=115200)
+        # print("connected to: " + self.serial.portstr)
         
-        # self.simple_menu.dist_disp.setText(self.read_com())
-        print(self.read_com())
+        # # self.simple_menu.dist_disp.setText(self.read_com())
+        # print(self.read_com())
         self.show()
-        self.serial.close()
+        # self.serial.close()
 
     def is_connected(self): #Check if connected
         return len(self.com_port) > 0
