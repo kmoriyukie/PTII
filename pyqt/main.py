@@ -12,14 +12,15 @@ from widgets.port_dialog import port_dialog, port_item
 class Ui(QtWidgets.QMainWindow):
     def __init__(self):
         super(Ui, self).__init__()
-        uic.loadUi('main.ui', self)
-        self.tab = self.findChild(QTabWidget)
+        # uic.loadUi('main.ui', self)
+        # self.tab = self.findChild(QTabWidget)
 
         self.simple_menu = simple_menu()
         self.graphs = graphs()
-        
-        self.tab.addTab(self.simple_menu, 'Tab 1')
-        self.tab.addTab(self.graphs, 'Tab 2')
+        self.setMinimumHeight(self.simple_menu.height())
+        self.setMinimumWidth(self.simple_menu.width())
+        # self.tab.addTab(self.simple_menu, 'Tab 1')
+        # self.tab.addTab(self.graphs, 'Tab 2')
         
         self.port_dialog = port_dialog(self)
         # self.port_dialog.exec_()
@@ -32,6 +33,7 @@ class Ui(QtWidgets.QMainWindow):
         
         # # self.simple_menu.dist_disp.setText(self.read_com())
         # print(self.read_com())
+        self.setCentralWidget(self.simple_menu)
         self.show()
         # self.serial.close()
 
