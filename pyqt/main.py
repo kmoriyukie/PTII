@@ -1,6 +1,6 @@
 from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
-from PyQt5 import (uic, QtWidgets)
+from PyQt5 import (uic, QtWidgets, QtCore)
 import sys
 
 from simple_menu import simple_menu
@@ -15,24 +15,28 @@ class Ui(QtWidgets.QMainWindow):
         # uic.loadUi('main.ui', self)
         # self.tab = self.findChild(QTabWidget)
 
-        self.simple_menu = simple_menu()
+        self.simple_menu = simple_menu(self)
         self.graphs = graphs()
         self.setMinimumHeight(self.simple_menu.height())
         self.setMinimumWidth(self.simple_menu.width())
-        # self.tab.addTab(self.simple_menu, 'Tab 1')
-        # self.tab.addTab(self.graphs, 'Tab 2')
+
         
         self.port_dialog = port_dialog(self)
-        # self.port_dialog.exec_()
+        self.port_dialog.exec_()
 
-        # if not self.is_connected():
-        #     print("INSERT TRY AGAIN DIALOG HERE")
+        if not self.is_connected():
+            print("INSERT TRY AGAIN DIALOG HERE")
         
-        # self.serial = serial.Serial(port=self.com_port, baudrate=115200)
-        # print("connected to: " + self.serial.portstr)
+        self.serial = serial.Serial(port=self.com_port, baudrate=115200)
+        print("connected to: " + self.serial.portstr)
         
+        self.timer = QtCore.QTimer(self)
+        self.timer.setInterval(100)
+        self.timer.start()
+        self.timer.timeout.connect(self.read_com)
+
         # # self.simple_menu.dist_disp.setText(self.read_com())
-        # print(self.read_com())
+        print(self.read_com())
         self.setCentralWidget(self.simple_menu)
         self.show()
         # self.serial.close()
@@ -50,7 +54,10 @@ class Ui(QtWidgets.QMainWindow):
                 joined_seq = ''.join(str(v) for v in seq) #Make a string from array
 
                 if chr(c) == '\n':
+                    self.simple_menu.update(joined_seq)
                     return joined_seq
+
+
 def main():
     app = QtWidgets.QApplication(sys.argv)
     ui = Ui()
